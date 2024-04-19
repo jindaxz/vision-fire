@@ -1,13 +1,26 @@
 
 _base_ = './faster-rcnn_r50_fpn_1x_coco.py'
 
-# ========================Frequently modified parameters======================
-# -----data related-----
+# model settings
 model = dict(
-    roi_head=dict(
-        bbox_head=dict(num_classes=4),
-))
-
+    backbone=dict(
+        type='ResNet_CBAM',
+        depth=50,
+        num_stages=4,
+        out_indices=(0, 1, 2, 3),
+        frozen_stages=1,
+        norm_cfg=dict(type='BN', requires_grad=True),
+        norm_eval=True,
+        style='pytorch',
+        init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50'),
+        use_cbam=True),
+    neck=dict(
+        type='FPN',
+        in_channels=[256, 512, 1024, 2048],
+        out_channels=256,
+        num_outs=5),
+    )
+    
 dataset_type = 'COCODataset'
 classes =  ('Alive Tree', 'Beetle-Fire Tree', 'Dead Tree', 'Debris')
 
@@ -28,8 +41,9 @@ train_batch_size_per_gpu = 8  # Batch size per GPU during training
 persistent_workers = True  # Whether to use persistent workers during training
 
 # -----train val related-----
-base_lr = 0.004  # Base learning rate for optimization
-max_epochs = 500  # Maximum training epochs
+# base_lr = 0.004  # Base learning rate for optimization
+base_lr = 0.04
+max_epochs = 300  # Maximum training epochs
 num_epochs_stage2 = 20  # Number of epochs for stage 2 training
 
 model_test_cfg = dict(
@@ -51,7 +65,7 @@ default_hooks = dict(
     early_stopping=dict(
         type="EarlyStoppingHook",
         monitor="coco/bbox_mAP_50",
-        patience=20,
+        patience=15,
         min_delta=0.001
     ),
 )
@@ -61,13 +75,12 @@ train_cfg=dict(
 )
 
 data = dict(
-    samples_per_gpu=8,
+    #samples_per_gpu=1,
     #workers_per_gpu=2,
     train=dict(
         type=dataset_type,
         img_prefix='train/',
         classes=classes,
-        img_scale=[(1333, 800), (1666, 1000)], # mutiscale
         ann_file='train/_annotations.coco.json.json'),
     val=dict(
         type=dataset_type,
@@ -118,34 +131,3 @@ max_keep_ckpts = 3
 # single-scale training is recommended to
 # be turned on, which can speed up training.
 env_cfg = dict(cudnn_benchmark=True)
-
-
-
-test_dataloader = dict(
-    dataset=dict(
-        data_root='/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5',
-    ),)
-test_evaluator = dict(
-    ann_file='/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5/valid/_annotations.coco.json',)
-
-
-
-train_dataloader = dict(
-
-    dataset=dict(
-        data_root='/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5',
-    ),)
-
-val_dataloader = dict(
-
-    dataset=dict(
-
-        data_root='/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5',
-    ),)
-    
-    
-val_evaluator = dict(
-    ann_file=
-    '/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5/valid/_annotations.coco.json',
-)
-

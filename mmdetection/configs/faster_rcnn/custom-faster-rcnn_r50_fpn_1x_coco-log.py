@@ -67,7 +67,6 @@ data = dict(
         type=dataset_type,
         img_prefix='train/',
         classes=classes,
-        img_scale=[(1333, 800), (1666, 1000)], # mutiscale
         ann_file='train/_annotations.coco.json.json'),
     val=dict(
         type=dataset_type,

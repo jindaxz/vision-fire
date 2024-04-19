@@ -7,9 +7,9 @@ evaluation = dict(interval=1, metric='bbox',save_best='bbox_mAP')
 # automatically infer from prefix (not support LMDB and Memcache yet)
 
 # data_root = 's3://openmmlab/datasets/detection/coco/'
-# data_root = '/work/van-speech-nlp/jindaznb/j-vis/Forestfire2024-1/'  # Root directory of the dataset
+data_root = '/work/van-speech-nlp/jindaznb/j-vis/Forestfire2024-1/'  # Root directory of the dataset
 
-data_root=f"/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5/"
+# data_root=f"/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5/"
 
 # Method 2: Use `backend_args`, `file_client_args` in versions before 3.0.0rc6
 # backend_args = dict(

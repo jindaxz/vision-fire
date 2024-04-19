@@ -28,8 +28,7 @@ train_batch_size_per_gpu = 8  # Batch size per GPU during training
 persistent_workers = True  # Whether to use persistent workers during training
 
 # -----train val related-----
-# base_lr = 0.004  # Base learning rate for optimization
-base_lr = 0.04
+base_lr = 0.004  # Base learning rate for optimization
 max_epochs = 500  # Maximum training epochs
 num_epochs_stage2 = 20  # Number of epochs for stage 2 training
 
@@ -52,7 +51,7 @@ default_hooks = dict(
     early_stopping=dict(
         type="EarlyStoppingHook",
         monitor="coco/bbox_mAP_50",
-        patience=15,
+        patience=20,
         min_delta=0.001
     ),
 )
@@ -73,12 +72,10 @@ data = dict(
     val=dict(
         type=dataset_type,
         img_prefix='valid/',
-        img_scale=(1333, 800),
         classes=classes,
         ann_file='valid/_annotations.coco.json'),
     test=dict(
         type=dataset_type,
-        img_scale=(1333, 800),
         img_prefix='test/',
         classes=classes,
         ann_file='test/_annotations.coco.json'))
@@ -121,3 +118,34 @@ max_keep_ckpts = 3
 # single-scale training is recommended to
 # be turned on, which can speed up training.
 env_cfg = dict(cudnn_benchmark=True)
+
+
+
+test_dataloader = dict(
+    dataset=dict(
+        data_root='/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5',
+    ),)
+test_evaluator = dict(
+    ann_file='/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5/valid/_annotations.coco.json',)
+
+
+
+train_dataloader = dict(
+
+    dataset=dict(
+        data_root='/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5',
+    ),)
+
+val_dataloader = dict(
+
+    dataset=dict(
+
+        data_root='/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5',
+    ),)
+    
+    
+val_evaluator = dict(
+    ann_file=
+    '/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5/valid/_annotations.coco.json',
+)
+

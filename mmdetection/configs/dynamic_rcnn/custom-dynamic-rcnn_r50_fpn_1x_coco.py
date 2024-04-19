@@ -8,8 +8,12 @@ model = dict(
         bbox_head=dict(num_classes=4),
 ))
 
+test_evaluator = dict(
+    ann_file='/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5/valid/_annotations.coco.json'
+)
+
 dataset_type = 'COCODataset'
-max_epochs = 200
+max_epochs = 500
 classes =  ('Alive Tree', 'Beetle-Fire Tree', 'Dead Tree', 'Debris') 
 
 data_root = '/work/van-speech-nlp/jindaznb/j-vis/ForestFire2023-5' # Root directory of the dataset
@@ -31,7 +35,7 @@ persistent_workers = True  # Whether to use persistent workers during training
 # -----train val related-----
 # base_lr = 0.004  # Base learning rate for optimization
 base_lr = 0.01
-max_epochs = 200  # Maximum training epochs
+max_epochs = 500  # Maximum training epochs
 num_epochs_stage2 = 20  # Number of epochs for stage 2 training
 
 model_test_cfg = dict(
